@@ -1,40 +1,52 @@
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
-import time
+import requests
+import json
 
-# Setup Chrome options for headless mode
-options = Options()
-options.add_argument("--headless")  # Ensure headless mode is activated
+#Fall2024- 2247- check browser URL for this val
+TERM_VAL = '2247'
 
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+#first three chars of the class (SUBJECT = CSE to track CSE450)
+SUBJECT = 'CSE'
 
-# Function to check for open seats
-def check_for_open_seats():
-    while True:
-        # Navigate to the class search page
-        driver.get("https://catalog.apps.asu.edu/catalog/classes/classlist?campusOrOnlineSelection=A&catalogNbr=355&honors=F&keywords=83573&promod=F&searchType=all&subject=CSE&term=2247")
+#last three chars of the class (CLASS_NUM = 450 to track CSE450)
+CLASS_NUM = '450'
+
+
+# Class Search URL
+url = f"https://eadvs-cscc-catalog-api.apps.asu.edu/catalog-microservices/api/v1/search/classes?&refine=Y&campusOrOnlineSelection=A&catalogNbr={CLASS_NUM}&honors=F&promod=F&searchType=all&subject={SUBJECT}&term={TERM_VAL}"
+
+# Authorization header
+headers = {
+    'Authorization': 'Bearer null'
+}
+
+while True:
+    # Make the GET request with NULL auth
+    response = requests.get(url, headers=headers)
+
+    # Parse the JSON response
+    data = json.loads(response.text)
+
+    # Extract seat counts
+    # JSON Hierarchy: classes[]->seat_info->ENRL_CAP/ENRL_TOT
+    if 'classes' in data:
+        for class_info in data['classes']:
+            seat_info = class_info.get('seatInfo', {})
+            
+            # class capacity
+            enrlcap = seat_info.get('ENRL_CAP')
+            
+            #total enrollment
+            totenrl = seat_info.get('ENRL_TOT')
+            
+            # send req again if no spots are available
+            if (enrlcap == totenrl) :
+                print("No Spots Available-- trying again...")
+                continue
+            else : # enroll and exit
+                openspots = enrlcap - totenrl
+                print(openspots, " spots available!")
+                exit(0)  
+    else:
+        print("No class information found.")
+        exit(1)
         
-        # Wait for the page to load completely
-        driver.implicitly_wait(10)
-        
-        # Find all elements that display open seats information
-        open_seats_elements = driver.find_elements(By.CSS_SELECTOR, "div[class='class-results-cell seats']")
-        
-        for seat in open_seats_elements:
-            # Extract the text and split it to check the number of open seats
-            seats_info = seat.text.split(" of ")
-            if len(seats_info) == 2 and int(seats_info[0]) > 0:
-                print(f"Open seats available: {seats_info[0]}")
-                return  # Exit the function if open seats are found
-            else:
-                print("No open seats, reloading...")
-                time.sleep(5)  # Wait for 5 seconds before reloading the page
-
-# Run the check
-check_for_open_seats()
-
-# Close the driver after checking
-driver.quit()
