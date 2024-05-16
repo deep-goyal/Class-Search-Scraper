@@ -17,27 +17,28 @@ git clone https://github.com/deep-goyal/open-spot-notifier.git
 ## Setup
 
 1. Create a python virtual environment:
+
    ```bash
    python -m venv venv
    ```
+
 2. Activate the environment:
+
    ```bash
    source ./venv/bin/activate
    ```
+
 3. Install the required dependencies by running:
+
    ```bash
    pip install requests
-   ```
-   ```bash
    pip install discord
-   ```
-   ```bash
    pip install selenium
-   ```
-   ```bash
    pip install webdriver_manager
    ```
+
 4. Update the following constants in the `script.py` file:
+
    - `TOKEN`: Your Discord bot token
    - `CHANNEL_ID`: ID of the Discord channel to send notifications
    - `TERM_VAL`: Term value for the class (found in URL)
@@ -74,11 +75,13 @@ This project is in its rudimentary stage and can really use some help to be perf
 3. Make your changes and commit them:
 
    ```bash
-   git commit -m 'Add new feature
+   git commit -m 'Add new feature'
    ```
 
 4. Push to the branch:
+
    ```bash
    git push origin feature-name
    ```
+
 5. Submit a pull request.

@@ -10,7 +10,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 # PING CONSTANTS
 TOKEN = ''                              # Bot token -- DO NOT FORGET TO REDACT IT BEFORE SHARING
-CHANNEL_ID = '1240355389309059072'      # Channel ID
+CHANNEL_ID = ''                         # Channel ID
 
 # CLASS INFO CONSTANTS
 TERM_VAL = '2247'                       # Fall2024- 2247- check browser URL for this val
