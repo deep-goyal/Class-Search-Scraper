@@ -88,4 +88,4 @@ This project is in its rudimentary stage and can really use some help to be perf
 
 ## License
 
-Distributed under the MIT License. See `License.txt` for more information.
+Distributed under the MIT License. See `LICENSE.txt` for more information.
