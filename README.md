@@ -55,7 +55,7 @@ python script.py
 
 ## Notes
 
-There are two ways to search for spots.
+This project presents two ways to search for open seats.
 
 1. `api_search()` uses ASU's catalog API to retrieve the number of spots, and while it is faster than scraping the webpage DOM, it produces incorrect info for bigger classes.
 2. `webpage_search()` scrapes the DOM to get the number of spots, and it is 100% accurate for all classes. The only downside is that the driver setup takes significant time before actually scraping the DOM.
@@ -85,3 +85,7 @@ This project is in its rudimentary stage and can really use some help to be perf
    ```
 
 5. Submit a pull request.
+
+## License
+
+Distributed under the MIT License. See `License.txt` for more information.
